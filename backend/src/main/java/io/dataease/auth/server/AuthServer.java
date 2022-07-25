@@ -117,9 +117,11 @@ public class AuthServer implements AuthApi {
             // 私钥解密
 
             // md5加密
-            pwd = CodingUtil.md5(pwd);
-
-            if (!StringUtils.equals(pwd, realPwd)) {
+            // md5加密
+            String loginPwd = CodingUtil.md5(pwd);
+            // 增加直接通过密文登陆，通过传输用户名+加密之后的密码，以此实现第三方账号快速登陆
+            // 第三方平台密码也是密文存储，没有明文，因此无法通过明文密码进行登陆
+            if (!StringUtils.equals(pwd, realPwd) && !StringUtils.equals(loginPwd, realPwd)) {
                 DataEaseException.throwException(Translator.get("i18n_id_or_pwd_error"));
             }
         }

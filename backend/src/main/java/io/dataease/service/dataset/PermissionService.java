@@ -135,13 +135,19 @@ public class PermissionService {
         datasetRowPermissions.addAll(rowPermissionService.searchRowPermissions(dataSetRowPermissionsDTO));
 
 
-        values.put("${sysParams.userId}", userEntity.getUsername());
+        // 如果绑定了第三方用户标识，则优先使用第三方用户标识
+        values.put("${sysParams.userId}", isBlank(userEntity.getEdiUserId()) ? userEntity.getUsername() : userEntity.getEdiUserId());
         values.put("${sysParams.userName}", userEntity.getNickName());
         values.put("${sysParams.userEmail}", userEntity.getEmail());
         values.put("${sysParams.userSource}", userEntity.getFrom() == 0 ? "LOCAL" : "OIDC");
-        values.put("${sysParams.dept}", userEntity.getDeptName());
+        // 如果绑定了第三方部门标识，则优先使用第三方部门标识
+        values.put("${sysParams.dept}", isBlank(userEntity.getEdiDeptId()) ? userEntity.getDeptName() : userEntity.getEdiDeptId());
         values.put("${sysParams.roles}", String.join(",", currentRoleDtos.stream().map(CurrentRoleDto::getName).collect(Collectors.toList())));
         return datasetRowPermissions;
+    }
+    // 非空判断
+    private boolean isBlank(String val) {
+        return val == null || val.equals("");
     }
 
     private List<DataSetColumnPermissionsDTO> columnPermissions(String datasetId, Long userId) {

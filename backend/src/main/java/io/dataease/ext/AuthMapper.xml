@@ -14,6 +14,8 @@
         <result column="is_admin" jdbcType="BIT" property="isAdmin"/>
         <result column="from" property="from"/>
         <result column="dept_name" property="deptName"/>
+        <result column="edi_user_id" property="ediUserId"/>
+        <result column="edi_dept_id" property="ediDeptId"/>
     </resultMap>
 
     <resultMap id="roleMap" type="io.dataease.auth.api.dto.CurrentRoleDto">
@@ -35,7 +37,9 @@
                sys_user.language,
                sys_user.is_admin,
                sys_user.`from`,
-               sys_dept.name as dept_name
+               sys_dept.name as dept_name,
+               sys_user.edi_user_id,
+               sys_user.edi_dept_id
         from sys_user
         left join sys_dept on sys_user.dept_id=sys_dept.dept_id
         where user_id = #{userId}

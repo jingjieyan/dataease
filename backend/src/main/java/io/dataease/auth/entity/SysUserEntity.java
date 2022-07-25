@@ -44,4 +44,10 @@ public class SysUserEntity implements Serializable {
 
     @ApiModelProperty(hidden = true)
     private Integer from;
+    /** 第三方用户ID */
+    @ApiModelProperty(hidden = true)
+    private String ediUserId;
+    /** 第三方部门ID */
+    @ApiModelProperty(hidden = true)
+    private String ediDeptId;
 }

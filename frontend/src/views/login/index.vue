@@ -155,6 +155,16 @@ export default {
 
   mounted() {
     // this.loading = false
+    // 通过URL传输用户名及加密之后的密码，实现从第三方系统跳转自动登陆
+    this.$nextTick(() => {
+      const query = this.$route.query
+      if (!query || !query.username || !query.password) {
+        return
+      }
+      this.loginForm.username = query.username
+      this.loginForm.password = query.password
+      this.handleLogin()
+    })
   },
 
   created() {
